@@ -31,7 +31,7 @@
 
 </template>
 
-<script setup lang="js">
+<script setup>
 import { ref, onBeforeMount } from "vue";
 import { getModuleTreeList, updateModuleTreeList, addModule, deleteModule} from "src/apis/system/module";
 import moduleTable from "pagecomponents/functionalModule/moduleTable/index.vue"

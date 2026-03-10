@@ -31,7 +31,7 @@
   </q-page>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { ref, onBeforeMount } from "vue";
 import { getSysConfigMenuList, addSysConfigMenu, updateSysConfigMenu, deleteSysConfigMenu} from "src/apis/system/configMenu";
 import { getModuleList } from "apis/system/module"
