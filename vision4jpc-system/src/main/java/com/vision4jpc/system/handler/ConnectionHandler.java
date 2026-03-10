@@ -51,7 +51,7 @@ public class ConnectionHandler {
         timerHandler.scheduleModuleInfo(500, TimeUnit.MILLISECONDS);
         // 延迟1000ms发送配置信息
         timerHandler.scheduleConfigInfo(800, TimeUnit.MILLISECONDS);
-        log.error("平板客户端新连接：" + ctx.channel().id().asLongText() + " 地址：" + clientIp);
+        log.error("客户端新连接：" + ctx.channel().id().asLongText() + " 地址：" + clientIp);
     }
 
     // 处理客户端的信息
