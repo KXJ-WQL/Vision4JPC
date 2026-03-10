@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--项目信息-->
+    <groupId>com.vision4jpc</groupId>
+    <artifactId>Vision4JPC</artifactId>
+    <version>1.0.0-Beta</version>
+
+    <!--项目其他描述信息-->
+    <name>vision4jpc</name>
+    <description>空想JavaPC</description>
+    <inceptionYear>2024-4-1</inceptionYear>
+    <url>https://github.com/KXJ-WQL</url>
+
+    <!--项目子模块-->
+    <modules>
+        <!--系统基础核心模块-->
+        <module>vision4jpc-framework</module>
+        <!--系统公共模块-->
+        <module>vision4jpc-common</module>
+        <!--系统模块(测试和打包入口)-->
+        <module>vision4jpc-system</module>
+        <!--系统业务应用模块-->
+        <module>vision4jpc-modules</module>
+    </modules>
+
+    <!--项目开发者信息-->
+    <developers>
+        <developer>
+            <id>developer</id>
+            <name>空想家</name>
+            <email>2562694007@qq.com</email>
+            <url>https://github.com/KXJ-WQL</url>
+            <organizationUrl>https://wql.luoqin.ltd/</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <!--打包方式pom(主要用于聚合和管理多个子模块)-->
+    <packaging>pom</packaging>
+
+    <!--定义公共版本属性-->
+    <properties>
+        <vision4jpc.version>1.0.0-Beta</vision4jpc.version>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <springboot.version>3.1.12</springboot.version>
+        <lombok.version>1.18.24</lombok.version>
+        <mysql.version>8.0.29</mysql.version>
+        <mybatis.starter.version>2.3.1</mybatis.starter.version>
+        <druid.version>1.2.18</druid.version>
+        <netty.version>4.1.86.Final</netty.version>
+        <fastjson2.version>2.0.50</fastjson2.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <http5client.version>5.3.1</http5client.version>
+        <javax.version>1.3.2</javax.version>
+        <pagehelper.version>1.4.6</pagehelper.version>
+    </properties>
+
+    <!--声明父工程依赖(被子模块Maven继承)-->
+    <dependencyManagement>
+        <dependencies>
+            <!-- SpringBoot的依赖配置-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!--mybatis集成SpringBoot-->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.starter.version}</version>
+            </dependency>
+
+            <!-- Mysql驱动包 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!--druid数据库连接池-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+
+            <!--阿里JSON解析器-->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
+            </dependency>
+
+            <!--lombok封装工具类-->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <!--mapstruct对象关系映射(Dao-Dto-Vo直接的转化)-->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+
+            <!-- netty网络通信 -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <!--httpClient客户端网络调用(用于与RestTemplate做集成进行图像抓取和算法调用)-->
+            <dependency>
+                <groupId>org.apache.httpcomponents.client5</groupId>
+                <artifactId>httpclient5</artifactId>
+                <version>${http5client.version}</version>
+            </dependency>
+
+            <!-- Mybatis分页插件 -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.version}</version>
+            </dependency>
+
+            <!-- JDK9以上版本，javax.annotation软件包被移至java.xml模块需要手动单独引入 -->
+            <dependency>
+                <groupId>javax.annotation</groupId>
+                <artifactId>javax.annotation-api</artifactId>
+                <version>${javax.version}</version>
+            </dependency>
+
+            <!--系统核心模块-->
+            <dependency>
+                <groupId>com.vision4jpc.framework</groupId>
+                <artifactId>vision4jpc-framework</artifactId>
+                <version>${vision4jpc.version}</version>
+            </dependency>
+
+            <!--系统通用模块-->
+            <dependency>
+                <groupId>com.vision4jpc.common</groupId>
+                <artifactId>vision4jpc-common</artifactId>
+                <version>${vision4jpc.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <!--构建编译项目信息-->
+    <build>
+        <!-- 插件配置 -->
+        <plugins>
+            <!-- Maven 编译插件配置 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <!-- 指定 Java 源文件的版本 -->
+                    <source>${java.version}</source>
+                    <!-- 指定编译后的目标版本 -->
+                    <target>${java.version}</target>
+                    <!-- 指定源文件的编码 -->
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+        <!-- 插件管理配置，用于管理不同插件的版本 -->
+        <pluginManagement>
+            <plugins>
+                <!-- Spring Boot Maven 插件配置 -->
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${springboot.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <!-- 指定插件的执行目标 -->
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <!--使用阿里云镜像仓库下载依赖-->
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <!--使用阿里云镜像仓库下载插件-->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+</project>

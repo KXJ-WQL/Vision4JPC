@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loading...</title>
+  <style>
+    /* 重置浏览器默认的 margin 和 padding */
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* 禁用点击高亮 */
+      background: transparent; /* 背景透明 */
+      font-family: 'Open Sans'; /* 设置字体 */
+      font-weight: 100;
+      color: #f2f2f2;
+      font-size: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* 中心对齐加载动画 */
+    .loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* 将加载动画中心对齐 */
+      text-align: center;
+      user-select: none; /* 禁止选中元素 */
+      cursor: default; /* 设置鼠标为默认光标 */
+    }
+
+    /* 文本样式 */
+    .loader .text {
+      position: absolute;
+      top: 1.0em;
+      left: 0.50em;
+      z-index: 5;
+      font-size: 2.5em;
+      font-weight: 900;
+      text-transform: uppercase; /* 全部转换为大写 */
+      text-shadow: 0 1px 0 #a16969,
+      0 2px 0 #76a56b,
+      0 3px 0 #8a5e9d,
+      0 4px 0 #e06d50,
+      0 5px 0 #aaa,
+      0 6px 1px rgba(0,0,0,.1),
+      0 0 5px rgba(0,0,0,.1),
+      0 1px 3px rgba(0,0,0,.1),
+      0 3px 5px rgba(0,0,0,.1),
+      0 5px 10px rgba(0,0,0,.1),
+      0 10px 10px rgba(0,0,0,.1),
+      0 20px 20px rgba(0,0,0,.15);
+      white-space: nowrap; /* 禁止换行 */
+    }
+
+    /* 为每个字母设置动画 */
+    .loader .text span {
+      display: block;
+      float: left;
+      animation: text cubic-bezier(0.750, 0.000, 0.500, 1.000) 1.2s infinite;
+      color: #F2F2EF;
+    }
+
+    /* 为每个字母设置不同的动画延迟 */
+    .loader .text span:nth-child(1) { animation-delay: 0ms; }
+    .loader .text span:nth-child(2) { animation-delay: 100ms; }
+    .loader .text span:nth-child(3) { animation-delay: 200ms; }
+    .loader .text span:nth-child(4) { animation-delay: 300ms; }
+    .loader .text span:nth-child(5) { animation-delay: 400ms; }
+    .loader .text span:nth-child(6) { animation-delay: 500ms; }
+    .loader .text span:nth-child(7) { animation-delay: 600ms; }
+    .loader .text span:nth-child(8) { animation-delay: 700ms; }
+    .loader .text span:nth-child(9) { animation-delay: 800ms; }
+
+    /* 设置旋转容器的样式 */
+    .rotation {
+      width: 12.5em;
+      height: 12.5em;
+      position: relative;
+      overflow: hidden;
+      background-image: url('./logo.png'); /* 设置背景图片 */
+      background-size: cover; /* 背景图片覆盖整个元素 */
+      background-position: center; /* 背景图片居中 */
+      background-repeat: no-repeat; /* 不重复背景图片 */
+      transform: rotate(45deg); /* 旋转45度 */
+      transform-origin: center center; /* 旋转中心为元素的中心 */
+      animation: rotateImage 2s infinite linear; /* 旋转动画 */
+    }
+
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    /* 定义 SVG 线条样式 */
+    svg line {
+      stroke-width: 10px;
+      fill: none;
+      stroke-dasharray: 200px;
+    }
+
+    /* 顶部线条动画 */
+    .rotation svg line.top {
+      stroke: #db9b00;
+      animation: topline cubic-bezier(0.750, 0.000, 0.500, 1.000) 1s infinite;
+    }
+
+    /* 底部线条动画 */
+    .rotation svg line.bottom {
+      stroke: #db0a28;
+      animation: bottomline cubic-bezier(0.750, 0.000, 0.500, 1.000) 1s infinite;
+    }
+
+    /* 左边线条动画 */
+    .rotation svg line.left {
+      stroke: #04a53a;
+      animation: leftline cubic-bezier(0.750, 0.000, 0.500, 1.000) 1s infinite;
+    }
+
+    /* 右边线条动画 */
+    .rotation svg line.right {
+      stroke: #1216a5;
+      animation: rightline cubic-bezier(0.750, 0.000, 0.500, 1.000) 1s infinite;
+    }
+
+    /* 定义顶线动画 */
+    @keyframes topline {
+      0% { transform: translateX(0px); }
+      50% { transform: translateX(-200px); }
+      100% { transform: translateX(-400px); }
+    }
+
+    /* 定义底线动画 */
+    @keyframes bottomline {
+      0% { transform: translateX(0px); }
+      50% { transform: translateX(200px); }
+      100% { transform: translateX(400px); }
+    }
+
+    /* 定义左线动画 */
+    @keyframes leftline {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(200px); }
+      100% { transform: translateY(400px); }
+    }
+
+    /* 定义右线动画 */
+    @keyframes rightline {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-200px); }
+      100% { transform: translateY(-400px); }
+    }
+
+    /* 定义文本缩放动画 */
+    @keyframes text {
+      0% { transform: scale(1,1); }
+      40% { transform: scale(1.4,1.4); }
+      70%,100% { transform: scale(1,1); }
+    }
+
+    /* 定义旋转动画 */
+    @keyframes rotateImage {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+<div class="loading-container">
+  <div class="loader">
+    <span class="text">
+      <!-- 每个 <span> 元素对应一个字 -->
+      <span>V</span><span>i</span><span>s</span><span>i</span><span>o</span><span>n</span>
+      <span>&nbsp;&nbsp;4</span><span>J</span><span>P</span><span>C</span>
+    </span>
+    <div class="rotation">
+      <!-- 定义旋转效果的 SVG -->
+      <svg width="400" height="400">
+        <line class="top" x1="-200" y1="0" x2="400" y2="0"/>
+        <line class="left" x1="0" y1="0" x2="0" y2="-400"/>
+        <line class="bottom" x1="-200" y1="200" x2="0" y2="200"/>
+        <line class="right" x1="200" y1="200" x2="200" y2="400"/>
+      </svg>
+    </div>
+  </div>
+</div>
+</body>
+</html>

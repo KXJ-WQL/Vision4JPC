@@ -1,0 +1,33 @@
+vision4jpc:
+  name: vision4jpc # 项目名称
+  version: 1.0.0.Beta # 项目版本号，当前为Beta版本
+  copyrightYear: 2024 # 版权年份
+
+# 服务器相关配置
+server:
+  port: 8080 # HTTP服务器的端口号，默认为9999
+  servlet:
+    context-path: / # 应用的上下文路径，默认为根路径
+  tomcat:
+    uri-encoding: UTF-8 # Tomcat URI编码设置，默认为UTF-8
+    accept-count: 1000 # 当所有请求线程都被占用时，Tomcat允许的最大排队请求数
+    threads:
+      max: 800 # Tomcat最大工作线程数
+      min-spare: 100 # Tomcat最小空闲线程数
+
+# Spring相关配置
+spring:
+  profiles: # Spring配置文件的相关设置
+    active: prod # 激活的Spring配置文件，默认为“env”
+  messages:
+    basename: i18n/messages # 国际化资源文件的基本名称
+  servlet:
+    multipart:
+      max-file-size: 10MB    # 单个上传文件的最大尺寸
+      max-request-size: 20MB # 单次请求的最大上传数据量
+
+# MyBatis相关配置
+mybatis:
+  typeAliasesPackage: com.vision4jpc.**.entity.dao # MyBatis别名包扫描路径
+  mapperLocations: classpath*:mapper/**/*.xml # MyBatis Mapper文件的扫描路径
+  configLocation: classpath:mybatis/mybatis-config.xml # MyBatis主配置文件路径

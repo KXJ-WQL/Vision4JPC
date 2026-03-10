@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision4jpc.system.mapper.SysModuleMapper">
+
+    <resultMap  type="SysModule" id="SysModuleResult">
+        <id property="moduleId" column="module_id"/>
+        <result property="name" column="name"/>
+        <result property="key" column="key"/>
+        <result property="description" column="description"/>
+        <result property="isEnabled" column="is_enabled"/>
+        <result property="isAlter" column="is_alter"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+    </resultMap>
+
+
+    <!--基础系统模块查询SQL-->
+    <sql id="selectBaseSysModule">
+        select module_id,
+               name,
+               `key`,
+               icon,
+               description,
+               is_enabled,
+               is_alter,
+               ifnull(parent_id,0) as parent_id,
+               created_time,
+               updated_time
+        from sys_module
+    </sql>
+
+    <!-- 查询模块 -->
+    <select id="selectModuleList" resultMap="SysModuleResult">
+        <include refid="selectBaseSysModule"></include>
+    </select>
+
+    <!-- 添加模块 -->
+    <insert id="addModule" parameterType="SysModule">
+        insert into sys_module (
+            <if test="name != null and name != ''">name,</if>
+            <if test="key != null and key != ''">`key`,</if>
+            <if test="icon != null and icon != ''">icon,</if>
+            <if test="description != null and description != ''">description,</if>
+            <if test="isEnabled != null and isEnabled != ''">is_enabled,</if>
+            <if test="isAlter != null and isAlter != ''">is_alter,</if>
+            <if test="parentId != null">parent_id,</if>
+            created_time)
+        values (
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="key != null and key != ''">#{key},</if>
+            <if test="icon != null and icon != ''">#{icon},</if>
+            <if test="description != null">#{description},</if>
+            <if test="isEnabled != null and isEnabled != ''">#{isEnabled},</if>
+            <if test="isAlter != null and isAlter != ''">#{isAlter},</if>
+            <if test="parentId != null">#{parentId},</if>
+            sysdate())
+    </insert>
+
+    <!-- 修改模块 -->
+    <update id="updateModule" parameterType="SysModule">
+        update sys_module
+        <set>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="key != null and key != ''">`key` = #{key},</if>
+            <if test="icon != null and icon != ''">icon = #{icon},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="isEnabled != null and isEnabled != ''">is_enabled = #{isEnabled},</if>
+            <if test="isAlter != null and isAlter != ''">is_alter = #{isAlter},</if>
+            <if test="parentId != null">`parent_id` = #{parentId},</if>
+            updated_time = sysdate()
+        </set>
+        where module_id = #{moduleId}
+    </update>
+
+    <!-- 删除模块 -->
+    <delete id="deleteSysModuleById" parameterType="integer">
+        DELETE FROM sys_module WHERE module_id = #{moduleId}
+    </delete>
+
+</mapper>

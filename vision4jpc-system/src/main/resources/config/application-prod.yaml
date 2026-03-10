@@ -1,0 +1,70 @@
+profile:
+  name: 系统生产环境env
+
+# 日志配置
+logging:
+  level:
+    com.vision4jpc: info          # 设置 com.vision4jpc 包下的日志级别为 info
+    org.springframework: warn  # 设置 org.springframework 包下的日志级别为 warn
+
+#生产环境的spring配置
+spring:
+  data:                      #数据项配置
+    redis:                   # redis 配置
+      host: 127.0.0.1        # 地址
+      port: 6379             # 端口，默认为6379
+      database: 0            # 数据库索引
+      password:              # 密码
+      timeout: 10s           # 连接超时时间
+      lettuce:               # Lettuce Redis客户端配置
+        pool:
+          min-idle: 0        # 连接池中的最小空闲连接
+          max-idle: 8        # 连接池中的最大空闲连接
+          max-active: 8      # 连接池的最大数据库连接数
+          max-wait: -1ms     # 连接池最大阻塞等待时间（使用负值表示没有限制）
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource # 指定使用Druid连接池
+    driverClassName: com.mysql.cj.jdbc.Driver   # 数据库驱动类名，根据所使用的数据库类型填写
+    url: jdbc:mysql://127.0.0.1:3306/vision4jpc?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true # 数据库连接URL，包含编码、SSL、时区等参数
+    username: root     # 数据库用户名
+    password: root     # 数据库密码
+    # Druid连接池配置
+    druid:
+      initial-size: 5                    # 初始化时建立的物理连接个数
+      min-idle: 5                        # 最小连接池数量
+      max-active: 20                     # 最大连接池数量
+      max-wait: 60000                    # 获取连接等待超时的时间，单位为毫秒
+      time-between-eviction-runs-millis: 60000 # 检测连接有效的时间间隔，单位为毫秒
+      min-evictable-idle-time-millis: 300000 # 连接保持空闲而不被驱逐的最小时间，单位为毫秒
+      validation-query: SELECT 1 FROM DUAL # 用于检测连接是否有效的SQL语句
+      test-while-idle: true                # 空闲时检查连接是否有效
+      test-on-borrow: false                # 申请连接时检查连接是否有效
+      test-on-return: false                # 归还连接时检查连接是否有效
+      pool-prepared-statements: true      # 是否缓存PreparedStatement
+      max-pool-prepared-statement-per-connection-size: 20 # 每个连接上缓存的PreparedStatement的最大数量
+      filters: stat,wall,log4j             # 配置监控统计拦截的filters
+      # Druid监控配置（可选）
+      stat-view-servlet:
+        enabled: true         # 是否启用StatViewServlet
+        url-pattern: /druid/* # StatViewServlet的URL映射
+        login-username: admin # 登录用户名
+        login-password: admin # 登录密码
+        allow:                # 允许访问的IP地址，多个IP地址用逗号分隔，不配置或为空表示允许所有访问
+        deny:                 # 拒绝访问的IP地址，多个IP地址用逗号分隔
+        web-stat-filter:
+          enabled: true       # 是否启用WebStatFilter
+          url-pattern: /*     # WebStatFilter的URL映射
+          exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*" # 排除的URL模式
+
+
+#netty配置
+netty:
+  serverPort: 9999 # Websocket服务端口
+  websocket-path: /ws  # URI路径
+  boss-thread: 6 # boss线程数
+  worker-thread: 12 # worker线程数
+  backlog: 100 # 当服务器请求处理线程全满时，用于临时存放已完成三次握手的请求的队列的最大长度
+
+#rxtx 485/433通信配置
+RXTX:
+  BaudRate: 9600

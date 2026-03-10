@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision4jpc.system.mapper.SysNavigationMapper">
+
+    <resultMap type="SysNavigation" id="SysNavigationResult" >
+        <id column="navigation_id" property="navigationId"/>
+        <result property="path" column="path"/>
+        <result property="name" column="name" />
+        <result property="parentId" column="parent_id" />
+        <result property="component" column="component"/>
+        <result property="icon" column="icon"/>
+        <result property="title" column="title"/>
+        <result property="iconSize" column="icon_size"/>
+        <result property="isSeparator" column="is_separator"/>
+        <result property="animation" column="animation"/>
+        <result property="cacheComponentName" column="cache_component_name"/>
+        <result property="order" column="order"/>
+        <result property="moduleId" column="module_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+    </resultMap>
+
+    <!--基础系统模块查询SQL-->
+    <sql id="selectBaseSysModule">
+        select n.navigation_id,
+               n.path,
+               n.name,
+               n.type,
+               n.parent_id,
+               n.component,
+               n.icon,
+               n.title,
+               n.icon_size,
+               ifnull(n.is_separator,1) is_separator,
+               n.animation,
+               n.cache_component_name,
+               n.`order`,
+               n.module_id,
+               n.created_time,
+               n.updated_time
+        from sys_navigation as n
+    </sql>
+
+
+    <!-- 连接查询module的通过功能模块是否开启(is_enabled='1')过滤掉没有开启的菜单-->
+    <select id="selectNavigationList" resultMap="SysNavigationResult">
+        <!-- 引入基础的查询语句 -->
+        <include refid="selectBaseSysModule"></include>
+    </select>
+
+    <!-- 连接查询module的通过功能模块是否开启(is_enabled='1')过滤掉没有开启的菜单-->
+    <select id="selectNavigationVoList" resultMap="SysNavigationResult">
+        <!-- 引入基础的查询语句，包含所有 sys_navigation 表的字段 -->
+        <include refid="selectBaseSysModule"></include>
+
+        <!-- 连接 sys_module 表，获取模块的相关信息 -->
+        JOIN sys_module m
+        ON n.module_id = m.module_id
+
+        <!-- 通过 LEFT JOIN 左连接 sys_module 表以获取父模块的信息 -->
+        LEFT JOIN sys_module pm
+        ON m.parent_id = pm.module_id
+
+        <!-- 查询条件：
+             1. 当前模块必须开启 (m.is_enabled = '1')。
+             2. 针对模块的父子关系进行判断：
+                - 如果模块没有父模块 (m.parent_id = 0) 或父模块为空 (m.parent_id IS NULL)，
+                  则只需要自身开启即可。
+                - 如果存在父模块，则父模块也必须处于开启状态 (pm.is_enabled = '1')。
+        -->
+        WHERE m.is_enabled = '1'
+        AND  (m.parent_id = 0 OR m.parent_id IS NULL OR pm.is_enabled = '1')
+    </select>
+
+    <!-- 插入导航菜单栏数据 -->
+    <insert id="addNavigation" parameterType="sysNavigation">
+        insert into sys_navigation (
+        <if test="path != null and path != ''">path,</if>
+        <if test="name != null and name != ''">name,</if>
+        <if test="type != null and type != ''">type,</if>
+        <if test="parentId != null">parent_id,</if>
+        <if test="icon != null and icon != ''">icon,</if>
+        <if test="title != null and title != ''">title,</if>
+        <if test="iconSize != null and iconSize != ''">icon_size,</if>
+        <if test="isSeparator != null">is_separator,</if>
+        <if test="animation != null and animation != ''">animation,</if>
+        <if test="order != null">`order`,</if>
+        <if test="moduleId != null and moduleId != 0">module_id,</if>
+        component,
+        cache_component_name,
+        created_time)
+        values (
+        <if test="path != null and path != ''">#{path},</if>
+        <if test="name != null and name != ''">#{name},</if>
+        <if test="type != null and type != ''">#{type},</if>
+        <if test="parentId != null">#{parentId},</if>
+        <if test="icon != null and icon != ''">#{icon},</if>
+        <if test="title != null and title != ''">#{title},</if>
+        <if test="iconSize != null and iconSize != ''">#{iconSize},</if>
+        <if test="isSeparator != null">#{isSeparator},</if>
+        <if test="animation != null and animation != ''">#{animation},</if>
+        <if test="order != null">#{order},</if>
+        <if test="moduleId != null and moduleId != 0">#{moduleId},</if>
+        #{component},
+        #{cacheComponentName},
+        sysdate()
+        )
+    </insert>
+
+    <!-- 修改导航菜单 -->
+    <update id="updateNavigation" parameterType="sysNavigation">
+        update sys_navigation
+        <set>
+            <if test="path != null">path = #{path},</if>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="type != null">`type` = #{type},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="component != null">component = #{component},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="iconSize != null">icon_size = #{iconSize},</if>
+            <if test="isSeparator != null">is_separator = #{isSeparator},</if>
+            <if test="animation != null">animation = #{animation},</if>
+            <if test="cacheComponentName != null">cache_component_name = #{cacheComponentName},</if>
+            <if test="order != null">`order` = #{order},</if>
+            <if test="moduleId != null">module_id = #{moduleId},</if>
+            updated_time = sysdate()
+        </set>
+        where navigation_id = #{navigationId}
+    </update>
+
+    <!-- 根据ID删除导航菜单 -->
+    <delete id="deleteSysNavigationById" parameterType="integer">
+        DELETE FROM sys_navigation WHERE navigation_id = #{navigationId}
+    </delete>
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision4jpc.system.mapper.SysConfigMapper">
+    <resultMap type="SysConfig" id="SysConfigResult">
+        <id property="configId" column="config_id"/>
+        <result property="key" column="key"/>
+        <result property="value" column="value"/>
+        <result property="description" column="description"/>
+        <result property="configMenuId" column="config_menu_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+    </resultMap>
+
+    <!--基础系统配置查询SQL-->
+    <sql id="selectBaseConfig">
+        select sc.config_id,
+               sc.`key`,
+               sc.`value`,
+               sc.description,
+               sc.config_menu_id,
+               sc.created_time,
+               sc.updated_time
+        from sys_config as sc
+    </sql>
+
+    <!-- 根据配置菜单的ID查询配置列表 -->
+    <select id="selectSysConfigListByConfigMenuId" parameterType="Long" resultMap="SysConfigResult">
+        <include refid="selectBaseConfig"></include>
+        where sc.config_menu_id = #{ configMenuId }
+    </select>
+
+    <!-- 获取所有的配置列表 -->
+    <select id="selectAllSysConfigList" resultMap="SysConfigResult">
+        <include refid="selectBaseConfig"></include>
+    </select>
+
+    <!--根据菜单查询所有所有模块开启的系统配置项(关联查询)
+     查询逻辑：
+        1. `sys_config` 表中的配置项通过 `config_menu_id` 字段与 `sys_config_menu` 表关联，获取对应的菜单信息。
+        2. `sys_config_menu` 通过 `module_id` 字段与 `sys_module` 表关联，获取对应的功能模块信息。
+        3. 对 `sys_module` 表进行自连接，获取父模块信息（通过 `parent_id` 字段关联）。
+        4. 只查询开启状态的功能模块和其父模块为开启状态的情况：
+            - 当前模块 `is_enabled = '1'`。
+            - 父模块 `is_enabled = '1'`，或者父模块不存在（即 `parent_id = 0` 或 `parent_id IS NULL`）。
+        5. 结果集按照菜单的 `order` 字段排序，然后按照模块的 `module_id` 和配置项的 `config_id` 进行次级排序
+    -->
+    <select id="selectSysConfigListByMouldIsEnabled" resultMap="SysConfigResult">
+        <include refid="selectBaseConfig"></include>
+        JOIN
+        sys_config_menu scm ON sc.config_menu_id = scm.config_menu_id
+        JOIN
+        sys_module sm ON scm.module_id = sm.module_id
+        LEFT JOIN
+        sys_module psm ON sm.parent_id = psm.module_id
+        WHERE
+        sm.is_enabled = '1'
+        AND (sm.parent_id = 0 OR sm.parent_id IS NULL OR psm.is_enabled = '1')
+        ORDER BY
+        scm.`order`, sm.module_id, sc.config_id;
+    </select>
+
+    <update id="updateSysConfig" parameterType="Map">
+        UPDATE sys_config
+        SET `value` = #{value},
+            updated_time = sysdate()
+        WHERE `key` = #{key}
+    </update>
+
+</mapper>

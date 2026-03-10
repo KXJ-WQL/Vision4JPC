@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 定义全局属性 -->
+    <!-- 日志文件的存放路径 -->
+    <property name="log.path" value="C:\vision4jpc-log" />
+    <!-- 日志输出的格式，包含时间、线程、日志级别、logger名称、方法名、行号和日志消息 -->
+    <property name="log.pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - %msg%n" />
+
+    <!-- 控制台日志输出(用于开发和调试) -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- 控制台日志中添加MDC信息 -->
+            <pattern>[Vision4JPC] ${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 系统信息日志(输出INFO级别的系统日志到文件，采用按天滚动的策略) -->
+    <appender name="file_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志文件路径 -->
+        <file>${log.path}/sys-info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志文件的命名格式 -->
+            <fileNamePattern>${log.path}/%d{yyyy-MM-dd}/sys-info.log</fileNamePattern>
+            <!-- 最大保留日志文件的天数 -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <!-- 日志输出格式 -->
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 仅接受INFO级别的日志 -->
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 输出ERROR级别的系统日志到文件，采用按天滚动的策略 -->
+    <appender name="file_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志文件路径 -->
+        <file>${log.path}/sys-error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志文件的命名格式 -->
+            <fileNamePattern>${log.path}/%d{yyyy-MM-dd}/sys-error.log</fileNamePattern>
+            <!-- 最大保留日志文件的天数 -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <!-- 日志输出格式 -->
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 仅接受ERROR级别的日志 -->
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 日志分类-应用程序日志 -->
+    <logger name="com.vision4jpc" level="info" />
+    <!-- Spring框架日志 -->
+    <logger name="org.springframework" level="warn" />
+
+    <!-- 全局日志配置-root级别日志，控制日志输出到多个appender -->
+    <root level="info">
+        <!-- 输出到控制台 -->
+        <appender-ref ref="console" />
+        <!-- 输出到系统信息日志 -->
+        <appender-ref ref="file_info" />
+        <!-- 输出到系统错误日志 -->
+        <appender-ref ref="file_error" />
+    </root>
+</configuration>

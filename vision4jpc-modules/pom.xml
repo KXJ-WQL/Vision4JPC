@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--继承的父模块-->
+    <parent>
+        <groupId>com.vision4jpc</groupId>
+        <artifactId>Vision4JPC</artifactId>
+        <version>1.0.0-Beta</version>
+    </parent>
+
+    <!--模块信息-->
+    <artifactId>vision4jpc-modules</artifactId>
+
+    <!--模块描述信息-->
+    <name>whshoot-modules</name>
+    <description>系统业务应用模块(开发时自定义模块放在该模块下)</description>
+    <inceptionYear>2024-8-21</inceptionYear>
+    <url>https://github.com/WQL-KXJ/</url>
+
+    <!--自定义模块-->
+    <modules>
+
+    </modules>
+
+    <!--打包方式pom(模块打包不会生成任何文件-仅作为资源模块)-->
+    <packaging>pom</packaging>
+</project>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision4jpc.system.mapper.SysInformationTypeMapper">
+
+    <resultMap  id="SysInformationTypeResult" type="SysInformationType">
+        <id property="typeId" column="type_id"/>
+        <result property="statusCode" column="status_code"/>
+        <result property="name" column="name"/>
+        <result property="solution" column="solution"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+    </resultMap>
+
+    <!--基础系统异常信息类型查询SQL-->
+    <sql id="selectBaseSysInformationType">
+        select type_id,
+               status_code,
+               `name`,
+               solution,
+               created_time,
+               updated_time
+        from sys_information_type
+    </sql>
+
+    <select id="selectSysInformationTypeList" resultMap="SysInformationTypeResult">
+        <include refid="selectBaseSysInformationType"></include>
+    </select>
+
+    <!-- 根据 status_code 查询系统异常信息 -->
+    <select id="selectSysInformationTypeByStatusCode" resultMap="SysInformationTypeResult">
+        <include refid="selectBaseSysInformationType"></include>
+        WHERE status_code = #{statusCode}
+    </select>
+
+    <!-- 插入系统异常信息类型 -->
+    <insert id="insertSysInformationType" parameterType="SysInformationType" >
+        INSERT INTO sys_information_type(
+        <if test="statusCode != null and statusCode != ''">status_code,</if>
+        <if test="name != null and name != ''">`name`,</if>
+        <if test="solution != null and solution != ''">solution,</if>
+        created_time
+        )
+        VALUES(
+        <if test="statusCode != null and statusCode != ''">#{statusCode},</if>
+        <if test="name != null and name != ''">#{name},</if>
+        <if test="solution != null and solution != ''">#{solution},</if>
+        sysdate()
+        )
+    </insert>
+
+    <!-- 更新现有的系统异常信息类型 -->
+    <update id="updateSysInformationType" parameterType="SysInformationType">
+        update sys_information_type
+        <set>
+            <if test="statusCode != null">status_code = #{statusCode},</if>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="solution != null">solution = #{solution},</if>
+            updated_time =sysdate()
+        </set>
+        WHERE type_id = #{typeId}
+    </update>
+
+    <!-- 删除系统异常信息类型 -->
+    <delete id="deleteSysInformationType">
+        delete from sys_information_type where type_id = #{typeId}
+    </delete>
+</mapper>

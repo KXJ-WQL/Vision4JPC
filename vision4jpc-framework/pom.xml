@@ -1,0 +1,78 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--继承的父工程-->
+    <parent>
+        <groupId>com.vision4jpc</groupId>
+        <artifactId>Vision4JPC</artifactId>
+        <version>1.0.0-Beta</version>
+    </parent>
+
+    <!--模块信息-->
+    <groupId>com.vision4jpc.framework</groupId>
+    <artifactId>vision4jpc-framework</artifactId>
+    <version>1.0.0-Beta</version>
+
+    <!--模块描述信息-->
+    <name>vision4jpc-framework</name>
+    <description>系统基础核心模块</description>
+    <inceptionYear>2024-6-26</inceptionYear>
+    <url>https://github.com/WQL-KXJ/</url>
+
+    <dependencies>
+
+        <!--web场景启动器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--参数效验场景启动器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- Mysql驱动包 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <!--druid连接池-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+        </dependency>
+
+        <!--Mybatis ORM框架-->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+        </dependency>
+
+        <!--mapstruct对象关系映射(Dao-Dto-Vo直接的转化)-->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+
+        <!--httpClient客户端网络调用(用于与RestTemplate做集成)-->
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+        </dependency>
+
+        <!--系统公共模块-->
+        <dependency>
+            <groupId>com.vision4jpc.common</groupId>
+            <artifactId>vision4jpc-common</artifactId>
+        </dependency>
+
+    </dependencies>
+</project>
