@@ -57,3 +57,12 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/KXJ-WQL/Vision4JPC/refs/heads/master/doc/image/Vision4JPC-Show.gif" alt="logo" width="100%">
 </p>
+
+**演示图片：**
+
+① 首页
+<p align="center">
+  <img src="https://raw.githubusercontent.com/KXJ-WQL/Vision4JPC/refs/heads/master/doc/image/Vision4JPC-Show.gif" alt="logo" width="100%">
+</p>
+
+
