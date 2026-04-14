@@ -62,7 +62,15 @@
 
 ① 首页
 <p align="center">
-  <img src="https://raw.githubusercontent.com/KXJ-WQL/Vision4JPC/refs/heads/master/doc/image/Vision4JPC-Show.gif" alt="logo" width="100%">
+  <img src="https://raw.githubusercontent.com/KXJ-WQL/Vision4JPC/refs/heads/master/doc/image/HomePage.png" alt="HomePage" width="100%">
 </p>
 
+② 菜单导航栏管理
+<p align="center">
+  <img src="https://raw.githubusercontent.com/KXJ-WQL/Vision4JPC/refs/heads/master/doc/image/NavigationBarManagement.png" alt="NavigationBarManagement" width="100%">
+</p>
 
+② 配置菜单栏管理
+<p align="center">
+  <img src="https://raw.githubusercontent.com/KXJ-WQL/Vision4JPC/refs/heads/master/doc/image/ConfigBarManagement.png" alt="ConfigBarManagement" width="100%">
+</p>
